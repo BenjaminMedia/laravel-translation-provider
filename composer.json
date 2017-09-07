@@ -1,0 +1,22 @@
+{
+    "name": "bonnier/laravel-translation-provider",
+    "description": "Laravel package to implement translations from Translation Manager",
+    "type": "laravel-package",
+    "require": {
+        "illuminate/support": "^5.4",
+        "illuminate/console": "^5.4",
+        "laravel/framework": "^5.4",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "authors": [
+        {
+            "name": "Bonnier Publications",
+            "email": "interactive@bonnier.dk"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Bonnier\\TranslationProvider\\": "src"
+        }
+    }
+}
