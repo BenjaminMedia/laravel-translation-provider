@@ -16,7 +16,7 @@ echo trans('trans-key|Translation value');
 ```
 
 ## Setup
-- ```composer require bonnier/laravel-translation-provider```
+- `composer require bonnier/laravel-translation-provider`
 - Remove Laravel TranslationServiceProvider by commenting out this line:
 ```php
     ...
@@ -28,7 +28,7 @@ echo trans('trans-key|Translation value');
     ...
     ],
 ```
-- Register the provider in ```config/app.php```
+- Register the provider in config/app.php`
 ```php
     ...
     'providers' => [
@@ -36,8 +36,15 @@ echo trans('trans-key|Translation value');
        Bonnier\TranslationProvider\TranslationServiceProvider::class, 
     ],
 ```
-- Setup configuration in ```.env```
+- Setup configuration in `.env`
 ```
 SERVICE_ID=1
 TRANSLATIONMANAGER_URL=http://url-to-translationmanager.com
+```
+- Set up in `config/services.php`
+```php
+    'translation_manager' => [
+        'url' => env('TRANSLATIONMANAGER_URL'),
+        'service_id' => env('SERVICE_ID'),
+    ],
 ```

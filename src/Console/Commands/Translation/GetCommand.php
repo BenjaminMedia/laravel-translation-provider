@@ -35,9 +35,9 @@ class GetCommand extends Command
     {
         parent::__construct();
 
-        $this->service_id = getenv('SERVICE_ID');
+        $this->service_id = config('services.translation_manager.service_id');
         $this->client = new Client([
-            'base_uri' => getenv('TRANSLATIONMANAGER_URL'),
+            'base_uri' => config('services.translation_manager.url'),
         ]);
         $this->translationPath = TranslationServiceProvider::getTranslationPath();
     }
