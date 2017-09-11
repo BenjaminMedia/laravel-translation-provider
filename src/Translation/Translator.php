@@ -44,7 +44,7 @@ class Translator extends LaravelTranslator
         if(is_null($value)) {
             $value = $key;
         }
-        
+
         Artisan::call('bonnier:translation:add', ['key' => $key, 'value' => $value]);
 
         return $value;
