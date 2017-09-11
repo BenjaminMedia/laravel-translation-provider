@@ -8,7 +8,12 @@ This only extends the `trans()` method, not the `__()` method.
 - $key - The translation key e.g `button-text`
 - $replace - Array with replace values e.g. `[:orderid => $order_id]`
 - $locale - String with locale, `null` for default. E.g. `da`, `en`, `sv`
-- $value - Default value, if key is not defined. This value will also be used to send a 'add translation' request to the translation manager
+
+## Default value
+Because of limitations in extending `trans()`, to define a default value to a non-existing translation key, use a pipe to parse the default value.
+```php
+echo trans('trans-key|Translation value');
+```
 
 ## Setup
 - ```composer require bonnier/laravel-translation-provider```

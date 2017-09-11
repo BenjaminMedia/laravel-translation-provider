@@ -24,8 +24,15 @@ class Translator extends LaravelTranslator
      *
      * @return array|null|string
      */
-    public function trans($key, array $replace = [], $locale = null, $value = null  )
+    public function trans($key, array $replace = [], $locale = null)
     {
+        $value = null;
+        if(str_contains($key, '|')) {
+            list($key, $value) = array_map('trim', explode('|', $key));
+        }
+        if($key == 'test-translation') {
+            dd($key, $replace, $locale, $value);
+        }
         if(str_contains($key, 'messages')) {
             $bonnierKey = self::TRANS_NAMESPACE.'::'.$this->brandId.'/'.$key;
         } else {
