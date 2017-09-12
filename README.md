@@ -1,5 +1,5 @@
 # Laravel Translation Provider
-Laravel package that retrieves translations strings from Translation Manager and extends the laravel __() localization function.
+Laravel package that retrieves translations strings from Translation Manager and extends the laravel `trans()` localization function.
 
 This only extends the `trans()` method, not the `__()` method.
 
