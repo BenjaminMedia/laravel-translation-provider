@@ -4,7 +4,7 @@ Laravel package that retrieves translations strings from Translation Manager and
 This only extends the `trans()` method, not the `__()` method.
 
 ## Usage
-`trans(string $key, array $replace, string $locale, string 1value)`
+`trans(string $key, array $replace, string $locale)`
 - $key - The translation key e.g `button-text`
 - $replace - Array with replace values e.g. `[:orderid => $order_id]`
 - $locale - String with locale, `null` for default. E.g. `da`, `en`, `sv`
