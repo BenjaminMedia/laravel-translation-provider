@@ -19,7 +19,6 @@ class Translator extends LaravelTranslator
      *
      * @param string $key
      * @param array $replace
-     * @param string|null $value
      * @param string|null $locale
      *
      * @return array|null|string
@@ -30,9 +29,7 @@ class Translator extends LaravelTranslator
         if(str_contains($key, '|')) {
             list($key, $value) = array_map('trim', explode('|', $key));
         }
-        if($key == 'test-translation') {
-            dd($key, $replace, $locale, $value);
-        }
+
         if(str_contains($key, 'messages')) {
             $bonnierKey = self::TRANS_NAMESPACE.'::'.$this->brandId.'/'.$key;
         } else {
@@ -54,7 +51,7 @@ class Translator extends LaravelTranslator
 
         Artisan::call('bonnier:translation:add', ['key' => $key, 'value' => $value]);
 
-        return $value;
+        return parent::trans($value, $replace, $locale);
     }
 
     public function setBrandId($brandId)
