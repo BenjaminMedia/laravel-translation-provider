@@ -2,14 +2,11 @@
 
 namespace Bonnier\TranslationProvider;
 
-
 use Bonnier\ContextService\Context\Context;
 use Bonnier\ContextService\Models\BpBrand;
 use Bonnier\TranslationProvider\Translation\Translator;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Translation\FileLoader;
 
-class TranslationServiceProvider extends ServiceProvider
+class TranslationServiceProvider extends \Illuminate\Translation\TranslationServiceProvider
 {
     protected $commands = [
         'Bonnier\TranslationProvider\Console\Commands\Translation\AddCommand',
@@ -34,7 +31,7 @@ class TranslationServiceProvider extends ServiceProvider
     {
         $this->commands($this->commands);
 
-        $this->registerLoader();
+        parent::register();
 
         $this->app->singleton('translator', function ($app) {
             $loader = $app['translation.loader'];
@@ -47,18 +44,6 @@ class TranslationServiceProvider extends ServiceProvider
 
             return $trans;
         });
-    }
-
-    protected function registerLoader()
-    {
-        $this->app->singleton('translation.loader', function ($app) {
-            return new FileLoader($app['files'], $app['path.lang']);
-        });
-    }
-
-    public function provides()
-    {
-        return ['translator', 'translation.loader'];
     }
 
     public static function getTranslationPath()

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File;
 
 class AddCommand extends Command
 {
+    const KEY_REGEX = '/^[a-z\.\_\-]+$/';
     protected $name = 'bonnier:translation:add';
 
     protected $signature = 'bonnier:translation:add {key?} {value?}';
@@ -36,15 +37,25 @@ class AddCommand extends Command
         $translationKey = $this->argument('key');
         $translationValue = $this->argument('value');
 
+        if($this->option('no-interaction')) {
+            if(!$translationKey || !$translationValue) {
+                return false;
+            }
+            if(!preg_match(self::KEY_REGEX, $translationKey)) {
+                return false;
+            }
+        }
+
         if(!$translationKey) {
             $translationKey = $this->ask('Enter translation key');
         }
+        
         if(!$translationValue) {
             $translationValue = $this->ask('Enter translation value');
         }
 
-        while(!preg_match('/^[a-z_-]+$/', $translationKey)) {
-            $this->error('Translation key must match \'/^[a-z_-]+$/\'');
+        while(!preg_match(self::KEY_REGEX, $translationKey)) {
+            $this->error('Translation key must match \''.self::KEY_REGEX.'\'');
             $translationKey = $this->ask('Enter translation key');
         }
 
