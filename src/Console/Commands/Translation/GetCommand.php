@@ -138,7 +138,6 @@ class GetCommand extends Command
             }
         }
 
-
         foreach ($translations as $key => $value) {
             if (!str_contains($key, '.')) {
                 $key = 'messages.' . $key;
