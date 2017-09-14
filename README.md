@@ -1,33 +1,38 @@
 # Laravel Translation Provider
-Laravel package that retrieves translations strings from Translation Manager and extends the laravel `trans()` localization function.
+Laravel package that retrieves translations strings from Translation Manager and makes them available for Laravel translation functions. 
 
-This only extends the `trans()` method, not the `__()` method.
 
 ## Usage
-`trans(string $key, array $replace, string $locale)`
-- $key - The translation key e.g `button-text`
-- $replace - Array with replace values e.g. `[:orderid => $order_id]`
-- $locale - String with locale, `null` for default. E.g. `da`, `en`, `sv`
+To use the translator call
 
-## Default value
-Because of limitations in extending `trans()`, to define a default value to a non-existing translation key, use a pipe to parse the default value.
-```php
-echo trans('trans-key|Translation value');
-```
+`Btrans::translate($key, $replace, $locale)`
+
+instead of 
+
+`trans($key, $replace, $locale)`
+
+## Add translation
+To add a translation, run:
+
+`php artisan bonnier:translation:add "translation-key" "Translation value"`
+
+## Update translation
+To update an exisiting translations, run:
+
+`php artisan bonnier:translation:update "translation-key" "Translation value"`
+
+## Delete translation
+To delete an existing translation, run: *VERY DESTRUCTIVE*
+
+`php artisan bonnier:translation:delete "translation-key"`
+
+## Getting translations
+To get all translations from Translation Manager, run:
+
+`php artisan bonnier:translation:get`
 
 ## Setup
 - `composer require bonnier/laravel-translation-provider`
-- Remove Laravel TranslationServiceProvider by commenting out this line:
-```php
-    ...
-    'providers' => [
-    ...
-    Illuminate\Session\SessionServiceProvider::class,
-    // Illuminate\Translation\TranslationServiceProvider::class,
-    Illuminate\Validation\ValidationServiceProvider::class,
-    ...
-    ],
-```
 - Register the provider in config/app.php`
 ```php
     ...

@@ -4,10 +4,12 @@ namespace Bonnier\TranslationProvider;
 
 use Bonnier\ContextService\Context\Context;
 use Bonnier\ContextService\Models\BpBrand;
-use Bonnier\TranslationProvider\Translation\Translator;
+use Illuminate\Support\ServiceProvider;
 
-class TranslationServiceProvider extends \Illuminate\Translation\TranslationServiceProvider
+class TranslationServiceProvider extends ServiceProvider
 {
+    const TRANSLATION_NAMESPACE = 'bonnier';
+
     protected $commands = [
         'Bonnier\TranslationProvider\Console\Commands\Translation\AddCommand',
         'Bonnier\TranslationProvider\Console\Commands\Translation\UpdateCommand',
@@ -17,33 +19,24 @@ class TranslationServiceProvider extends \Illuminate\Translation\TranslationServ
 
     private static $translationPath;
 
+    private static $brandId;
+
     public function boot()
     {
-        $this->loadTranslationsFrom(self::getTranslationPath(), 'bonnier');
+        $this->loadTranslationsFrom(self::getTranslationPath(), self::TRANSLATION_NAMESPACE);
+
         /** @var BpBrand $brand */
         $brand = app(Context::class)->getBrand();
         if($brand) {
-            app('translator')->setBrandId($brand->getId());
+            self::$brandId = $brand->getId();
+        } else {
+            self::$brandId = 'default';
         }
     }
 
     public function register()
     {
         $this->commands($this->commands);
-
-        parent::register();
-
-        $this->app->singleton('translator', function ($app) {
-            $loader = $app['translation.loader'];
-
-            $locale = $app['config']['app.locale'];
-
-            $trans = new Translator($loader, $locale);
-
-            $trans->setFallback($app['config']['app.fallback_locale']);
-
-            return $trans;
-        });
     }
 
     public static function getTranslationPath()
@@ -52,5 +45,10 @@ class TranslationServiceProvider extends \Illuminate\Translation\TranslationServ
             self::$translationPath = __DIR__.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'lang';
         }
         return self::$translationPath;
+    }
+
+    public static function getBrandId()
+    {
+        return self::$brandId;
     }
 }
