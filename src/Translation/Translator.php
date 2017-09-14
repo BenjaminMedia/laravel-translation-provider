@@ -30,11 +30,7 @@ class Translator extends LaravelTranslator
             list($key, $value) = array_map('trim', explode('|', $key));
         }
 
-        if(str_contains($key, 'messages')) {
-            $bonnierKey = self::TRANS_NAMESPACE.'::'.$this->brandId.'/'.$key;
-        } else {
-            $bonnierKey = self::TRANS_NAMESPACE.'::'.$this->brandId.'/messages.'.$key;
-        }
+        $bonnierKey = self::TRANS_NAMESPACE.'::'.$this->brandId.'/'.$key;
 
         $translation = parent::trans($bonnierKey, $replace, $locale);
         if($translation !== $bonnierKey) {
@@ -46,7 +42,11 @@ class Translator extends LaravelTranslator
         }
 
         if(is_null($value)) {
+            if(substr($key, 0, 10) === 'validation') {
+                return parent::trans($key, $replace, $locale);
+            }
             $value = $key;
+
         }
 
         Artisan::call('bonnier:translation:add', ['key' => $key, 'value' => $value, '--no-interaction' => true]);

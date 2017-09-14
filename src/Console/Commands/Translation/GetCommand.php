@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Bonnier\TranslationProvider\Console\Commands\Translation;
-
 
 use Bonnier\TranslationProvider\TranslationServiceProvider;
 use GuzzleHttp\Client;
@@ -113,11 +111,24 @@ class GetCommand extends Command
         echo PHP_EOL;
     }
 
+    private function assignArrayByPath(&$arr, $path, $value, $separator='.') {
+        $keys = explode($separator, $path);
+        foreach ($keys as $key) {
+            if(isset($arr[$key]) && !is_array($arr[$key])) {
+                $arr[$key] = [];
+            }
+            $arr = &$arr[$key];
+        }
+        $arr = $value;
+    }
+
     private function writeTranslations($lang, $brand, $translations)
     {
         $structure = $lang.DIRECTORY_SEPARATOR.$brand;
         $path = $this->translationPath.DIRECTORY_SEPARATOR.$structure;
-        $filepath = $path.DIRECTORY_SEPARATOR.'messages.php';
+        $translationArrays = [
+            'messages' => [],
+        ];
 
         if(!File::exists($path))
         {
@@ -126,19 +137,30 @@ class GetCommand extends Command
                 $this->error(sprintf('Could not make directory \'%s\'', $structure));
             }
         }
-        $fileContent = "<?php".PHP_EOL;
-        $fileContent .= PHP_EOL;
-        $fileContent .= '// Translations fetched at '.date('Y-m-d H:i:s').PHP_EOL;
-        $fileContent .= PHP_EOL;
-        $fileContent .= "return [".PHP_EOL;
-        foreach($translations as $key => $value) {
+
+
+        foreach ($translations as $key => $value) {
+            if (!str_contains($key, '.')) {
+                $key = 'messages.' . $key;
+            }
+            $this->assignArrayByPath($translationArrays, $key, $value, '.');
             $this->saveBar->advance();
-            $fileContent .= "    '".$key."' => '".addslashes($value)."',".PHP_EOL; // eg. 'translation-key' => 'Translation value',
         }
-        $fileContent .= "];".PHP_EOL;
-        if(File::exists($filepath)) {
-            File::delete($filepath);
+
+        foreach($translationArrays as $file => $translations) {
+            $fileContent = "<?php".PHP_EOL;
+            $fileContent .= PHP_EOL;
+            $fileContent .= '// Translations fetched at '.date('Y-m-d H:i:s').PHP_EOL;
+            $fileContent .= PHP_EOL;
+            $fileContent .= "return ";
+
+            $filePath = $path.DIRECTORY_SEPARATOR.$file.'.php';
+            if(File::exists($filePath)) {
+                File::delete($filePath);
+            }
+            File::put($filePath, $fileContent.var_export($translations, true).";".PHP_EOL);
         }
-        return File::put($filepath, $fileContent);
+
+        return true;
     }
 }
