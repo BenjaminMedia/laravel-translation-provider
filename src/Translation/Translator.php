@@ -49,7 +49,7 @@ class Translator extends LaravelTranslator
             $value = $key;
         }
 
-        Artisan::call('bonnier:translation:add', ['key' => $key, 'value' => $value, '--silent' => true]);
+        Artisan::call('bonnier:translation:add', ['key' => $key, 'value' => $value, '--no-interaction' => true]);
 
         return parent::trans($value, $replace, $locale);
     }

@@ -12,7 +12,7 @@ class AddCommand extends Command
 {
     protected $name = 'bonnier:translation:add';
 
-    protected $signature = 'bonnier:translation:add {key?} {value?} {--S|silent}';
+    protected $signature = 'bonnier:translation:add {key?} {value?}';
 
     protected $description = 'Add new translation to the Translation Manager';
 
@@ -36,7 +36,7 @@ class AddCommand extends Command
         $translationKey = $this->argument('key');
         $translationValue = $this->argument('value');
 
-        if($this->option('silent')) {
+        if($this->option('no-interaction')) {
             if(!$translationKey || !$translationValue) {
                 return false;
             }
@@ -44,9 +44,11 @@ class AddCommand extends Command
                 return false;
             }
         }
+
         if(!$translationKey) {
             $translationKey = $this->ask('Enter translation key');
         }
+        
         if(!$translationValue) {
             $translationValue = $this->ask('Enter translation value');
         }
