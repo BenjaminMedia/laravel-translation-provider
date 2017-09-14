@@ -6,10 +6,9 @@ namespace Bonnier\TranslationProvider;
 use Bonnier\ContextService\Context\Context;
 use Bonnier\ContextService\Models\BpBrand;
 use Bonnier\TranslationProvider\Translation\Translator;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Translation\FileLoader;
 
-class TranslationServiceProvider extends ServiceProvider
+class TranslationServiceProvider extends \Illuminate\Translation\TranslationServiceProvider
 {
     protected $commands = [
         'Bonnier\TranslationProvider\Console\Commands\Translation\AddCommand',
