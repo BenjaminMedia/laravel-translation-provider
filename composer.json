@@ -19,5 +19,8 @@
         "psr-4": {
             "Bonnier\\TranslationProvider\\": "src"
         }
-    }
+    },
+    "files": [
+        "src/Helpers/BTrans.php"
+    ]
 }

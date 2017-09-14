@@ -53,3 +53,10 @@ TRANSLATIONMANAGER_URL=http://url-to-translationmanager.com
         'service_id' => env('SERVICE_ID'),
     ],
 ```
+- Set up in `config/app.php`
+```php
+    'aliases' => [
+        ...,
+        'BTrans' => \Bonnier\TranslationProvider\Helpers\BTrans::class,
+    ]
+```
