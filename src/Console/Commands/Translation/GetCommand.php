@@ -85,8 +85,7 @@ class GetCommand extends Command
     private function parseResult($result)
     {
         $translations = [];
-        foreach($result as $brandId => $brandTranslations)
-        {
+        foreach($result as $brandId => $brandTranslations) {
             foreach($brandTranslations as $translation) {
                 foreach($translation->value as $locale => $value) {
                     $translations[$locale][$brandId][$translation->key] = $value;
