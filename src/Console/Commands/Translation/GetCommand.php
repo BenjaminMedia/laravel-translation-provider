@@ -65,7 +65,7 @@ class GetCommand extends Command
         $this->info('Parsing translations');
         $result = json_decode($response->getBody()->getContents());
         if($result) {
-            $count = count($result);
+            $count = 10;
             $this->info(sprintf('Fetched %s translations', $count));
             $translations = $this->parseResult($result);
             if($translations) {
@@ -85,14 +85,13 @@ class GetCommand extends Command
     private function parseResult($result)
     {
         $translations = [];
-        foreach($result as $translation) {
-            if(is_null($translation->brand_id)) {
-                $translations[$translation->locale]['default'][$translation->key] = $translation->value;
-            } else {
-                $translations[$translation->locale][$translation->brand_id][$translation->key] = $translation->value;
+        foreach($result as $brandId => $brandTranslations) {
+            foreach($brandTranslations as $translation) {
+                foreach($translation->value as $locale => $value) {
+                    $translations[$locale][$brandId][$translation->key] = $value;
+                }
             }
         }
-
         return $translations;
     }
 
